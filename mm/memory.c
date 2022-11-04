@@ -3468,6 +3468,11 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
 	return 0;
 }
 
+void log_page_swap(unsigned long swp_offset, unsigned long vaddr, pgoff_t pgoff, unsigned long pid)
+{
+	printk("\nSWAPLOG: %ld, %ld, %ld, %ld,\n", swp_offset, vaddr, pgoff, pid);
+}
+
 /*
  * We enter with non-exclusive mmap_lock (to exclude vma changes,
  * but allow concurrent faults), and pte mapped but not yet locked.
@@ -3519,6 +3524,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
 	delayacct_set_flag(current, DELAYACCT_PF_SWAPIN);
 	page = lookup_swap_cache(entry, vma, vmf->address);
 	swapcache = page;
+
+	// TODO(jackson): Instrument here.
+    // Swap offset can be obtained from entry.
+    // Virt address can be obtained from vm_fault.
+    // Get proc ID
+
+	log_page_swap(entry.val, vmf->address, vmf->pgoff, current->pid);
 
 	if (!page) {
 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
