@@ -563,6 +563,8 @@ __cmd_probe(int argc, const char **argv)
 	OPT__DRY_RUN(&probe_event_dry_run),
 	OPT_INTEGER('\0', "max-probes", &probe_conf.max_probes,
 		 "Set how many probe points can be found for a probe."),
+	OPT_UINTEGER('\0', "force-size", &probe_conf.force_type_size,
+		 "Force type size for array calculations."),
 	OPT_CALLBACK_DEFAULT('F', "funcs", NULL, "[FILTER]",
 			     "Show potential probe-able functions.",
 			     opt_set_filter_with_command, DEFAULT_FUNC_FILTER),

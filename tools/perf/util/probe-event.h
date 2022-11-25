@@ -17,6 +17,7 @@ struct probe_conf {
 	bool	cache;
 	bool	bootconfig;
 	int	max_probes;
+	unsigned int force_type_size;
 	unsigned long	magic_num;
 };
 extern struct probe_conf probe_conf;

@@ -397,7 +397,12 @@ static int convert_variable_type(Dwarf_Die *vr_die,
 		prefix = die_is_signed_type(&type) ? 's' :
 			 probe_type_is_available(PROBE_TYPE_X) ? 'x' : 'u';
 
-	ret = dwarf_bytesize(&type);
+	if (probe_conf.force_type_size) {
+		ret = probe_conf.force_type_size;
+	}
+	else {
+		ret = dwarf_bytesize(&type);
+	}
 	if (ret <= 0)
 		/* No size ... try to use default type */
 		return 0;
@@ -464,7 +469,12 @@ static int convert_variable_fields(Dwarf_Die *vr_die, const char *varname,
 			else
 				*ref_ptr = ref;
 		}
-		ref->offset += dwarf_bytesize(&type) * field->index;
+		if (probe_conf.force_type_size) {
+			ref->offset += dwarf_bytesize(&type) * field->index;
+		}
+		else {
+			ref->offset += probe_conf.force_type_size * field->index;
+		}
 		ref->user_access = user_access;
 		goto next;
 	} else if (tag == DW_TAG_pointer_type) {
