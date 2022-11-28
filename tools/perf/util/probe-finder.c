@@ -470,10 +470,10 @@ static int convert_variable_fields(Dwarf_Die *vr_die, const char *varname,
 				*ref_ptr = ref;
 		}
 		if (probe_conf.force_type_size) {
-			ref->offset += dwarf_bytesize(&type) * field->index;
+			ref->offset += probe_conf.force_type_size * field->index;
 		}
 		else {
-			ref->offset += probe_conf.force_type_size * field->index;
+			ref->offset += dwarf_bytesize(&type) * field->index;
 		}
 		ref->user_access = user_access;
 		goto next;
